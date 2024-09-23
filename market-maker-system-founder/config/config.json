@@ -1,0 +1,6 @@
+{
+    "rpcUrl": "https://api.devnet.solana.com",
+    "tokenMint": "<your-token-mint-address>",
+    "primaryWallet": "<your-primary-wallet-address>"
+  }
+  
