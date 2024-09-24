@@ -1,120 +1,130 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Spinner, Container, Row, Col, Card, Button, Form, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  // State variables for input fields and logs
   const [distributionNumber, setDistributionNumber] = useState(0);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [log, setLog] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Helper to add logs with timestamps
+  const addLog = (message) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setLog([...log, `${timestamp} - ${message}`]);
+  };
 
   // Handler for volume creation
   const createVolume = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('http://localhost:5001/volume', {
-        distributionNumber,
-        totalTransactions,
+        distributionNumber: parseInt(distributionNumber),
+        totalTransactions: parseInt(totalTransactions),
       });
-      console.log(distributionNumber)
-      console.log(totalTransactions)
-      setLog([...log, `Volume created successfully: ${response.data[0].message}`]);
+      addLog(`Volume created successfully: ${response.data[0].message}`);
     } catch (error) {
-      setLog([...log, `Error: ${error.message}`]);
+      addLog(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handler for collecting remaining SOL
   const collectSol = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('http://localhost:5001/collectSol');
-      setLog([...log, `SOL collected successfully: ${response.data[0].message}`]);
+      addLog(`SOL collected successfully: ${response.data[0].message}`);
     } catch (error) {
-      setLog([...log, `Error: ${error.message}`]);
+      addLog(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handler for closing SPL token accounts
   const closeSplAccounts = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('http://localhost:5001/closeSpl');
-      setLog([...log, `SPL token accounts closed: ${response.data[0].message}`]);
+      addLog(`SPL token accounts closed: ${response.data[0].message}`);
     } catch (error) {
-      setLog([...log, `Error: ${error.message}`]);
+      addLog(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-8">Token Volume Creation Tool</h1>
+    <Container className="min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light py-5">
+      <h1 className="mb-5 text-primary">Market Maker Founder Tool</h1>
 
       {/* Volume Creation Section */}
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Volume Creation</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Distribution Number (Wallets)
-          </label>
-          <input
-            type="number"
-            value={distributionNumber}
-            onChange={(e) => setDistributionNumber(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-            placeholder="Enter number of wallets"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Total Transactions (Buy/Sell Orders)
-          </label>
-          <input
-            type="number"
-            value={totalTransactions}
-            onChange={(e) => setTotalTransactions(e.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-            placeholder="Enter total transactions"
-          />
-        </div>
-        <button
-          onClick={createVolume}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Create Volume
-        </button>
-      </div>
+      <Row className="mb-4 w-100">
+        <Col>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title className="text-primary">Volume Creation</Card.Title>
+              <Form>
+                <Form.Group className="mb-3" controlId="formDistributionNumber">
+                  <Form.Label>Distribution Number (Wallets)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={distributionNumber}
+                    onChange={(e) => setDistributionNumber(e.target.value)}
+                    placeholder="Enter number of wallets"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formTotalTransactions">
+                  <Form.Label>Total Transactions (Buy/Sell Orders)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={totalTransactions}
+                    onChange={(e) => setTotalTransactions(e.target.value)}
+                    placeholder="Enter total transactions"
+                  />
+                </Form.Group>
+
+                <Button variant="primary" onClick={createVolume} disabled={loading}>
+                  {loading ? <Spinner animation="border" size="sm" /> : 'Create Volume'}
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
       {/* Remaining SOL Collection Section */}
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Collect Remaining SOL</h2>
-        <button
-          onClick={collectSol}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Collect SOL
-        </button>
-      </div>
+      <Row className="mb-4 w-100">
+        <Col>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title className="text-success">Collect Remaining SOL</Card.Title>
+              <Button variant="success" onClick={collectSol} disabled={loading}>
+                {loading ? <Spinner animation="border" size="sm" /> : 'Collect SOL'}
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
       {/* SPL Account Closure Section */}
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-2xl font-bold mb-4">Close SPL Token Accounts</h2>
-        <button
-          onClick={closeSplAccounts}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Close SPL Accounts
-        </button>
-      </div>
-
-      {/* Log Section */}
-      <div className="bg-gray-200 p-4 rounded mt-4">
-        <h2 className="text-xl font-bold mb-2">Logs</h2>
-        <ul>
-          {log.map((entry, index) => (
-            <li key={index} className="text-sm text-gray-700">
-              {entry}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      <Row className="mb-4 w-100">
+        <Col>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title className="text-danger">Close SPL Token Accounts</Card.Title>
+              <Button variant="danger" onClick={closeSplAccounts} disabled={loading}>
+                {loading ? <Spinner animation="border" size="sm" /> : 'Close SPL Accounts'}
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
