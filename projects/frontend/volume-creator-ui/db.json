@@ -1,0 +1,65 @@
+{
+  "volume": [
+    {
+      "id": "1",
+      "status": "success",
+      "message": "Volume created successfully"
+    },
+    {
+      "id": "f36f",
+      "distributionNumber": 10,
+      "totalTransactions": 20
+    },
+    {
+      "id": "8e7f",
+      "distributionNumber": 10,
+      "totalTransactions": 20
+    },
+    {
+      "id": "c29f",
+      "distributionNumber": 10,
+      "totalTransactions": 20
+    },
+    {
+      "id": "7d56",
+      "distributionNumber": 10,
+      "totalTransactions": 20
+    },
+    {
+      "id": "b914",
+      "distributionNumber": "1",
+      "totalTransactions": "2"
+    },
+    {
+      "id": "6a2b",
+      "distributionNumber": "1",
+      "totalTransactions": "2"
+    }
+  ],
+  "collectSol": [
+    {
+      "id": "1",
+      "status": "success",
+      "message": "Collected remaining SOL"
+    },
+    {
+      "id": "db4e"
+    },
+    {
+      "id": "796a"
+    }
+  ],
+  "closeSpl": [
+    {
+      "id": "1",
+      "status": "success",
+      "message": "Closed SPL token accounts"
+    },
+    {
+      "id": "15d1"
+    },
+    {
+      "id": "bcd2"
+    }
+  ]
+}
