@@ -1,4 +1,4 @@
-const { closeTokenAccount } = require('./utils/token');
+const { closeTokenAccount } = require('./utils/tokens');
 
 async function closeAccounts(tokenAccounts, mint, ownerWallet) {
     for (let account of tokenAccounts) {

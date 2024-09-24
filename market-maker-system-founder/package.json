@@ -1,7 +1,7 @@
 {
   "name": "market-maker-system-founder",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +11,8 @@
   "description": "",
   "dependencies": {
     "@solana/spl-token": "^0.4.8",
-    "@solana/web3.js": "^1.95.3"
+    "@solana/web3.js": "^1.95.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
   }
 }
